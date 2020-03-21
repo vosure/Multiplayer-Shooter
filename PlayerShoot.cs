@@ -5,7 +5,13 @@ public class PlayerShoot : NetworkBehaviour
 {
     private const string PLAYER_TAG = "Player";
 
-    public PlayerWeapon weapon;
+    [SerializeField]
+    private PlayerWeapon weapon;
+
+    [SerializeField]
+    private GameObject weaponGFX;
+    [SerializeField]
+    private string weaponLayerName = "Weapon";
 
     [SerializeField]
     private Camera camera;
@@ -19,6 +25,8 @@ public class PlayerShoot : NetworkBehaviour
         {
             this.enabled = false;
         }
+
+        weaponGFX.layer = LayerMask.NameToLayer(weaponLayerName);
     }
 
     private void Update()

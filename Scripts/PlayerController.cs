@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 [RequireComponent (typeof(ConfigurableJoint))]
 [RequireComponent (typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour
@@ -15,32 +16,33 @@ public class PlayerController : MonoBehaviour
 
     [Header("Spring settings")]
     [SerializeField]
-    private JointDriveMode jointMode = JointDriveMode.Position;
-    [SerializeField]
     private float jointSpring = 20f;
     [SerializeField]
     private float jointMaxForce = 40f;
 
     private PlayerMotor motor;
     private ConfigurableJoint joint;
+    private Animator animator;
 
     private void Start()
     {
         motor = GetComponent<PlayerMotor>();
         joint = GetComponent<ConfigurableJoint>();
+        animator = GetComponent<Animator>();
 
         SetJointSettings(jointSpring);
     }
 
     private void Update()
     {
-        float xMove = Input.GetAxisRaw("Horizontal");
-        float zMove = Input.GetAxisRaw("Vertical");
+        float xMove = Input.GetAxis("Horizontal");
+        float zMove = Input.GetAxis("Vertical");
 
         Vector3 moveHorizontal = transform.right * xMove;
         Vector3 moveVertical = transform.forward * zMove;
         Vector3 velocity = (moveHorizontal + moveVertical).normalized * speed;
         motor.Move(velocity);
+        animator.SetFloat("ForwardVelocity", zMove);
 
         float yRotation = Input.GetAxis("Mouse X");
         Vector3 rotation = new Vector3(0.0f, yRotation, 0.0f) * mouseSensitivity;
@@ -62,12 +64,10 @@ public class PlayerController : MonoBehaviour
         }
         motor.ApplyThruster(thrusterForce);
     }
-
     private void SetJointSettings(float jointSpring)
     {
         joint.yDrive = new JointDrive
         {
-            mode = jointMode,
             positionSpring = jointSpring,
             maximumForce = jointMaxForce
         };
