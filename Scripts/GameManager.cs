@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
 
     public MatchSettings matchSettings;
 
+    [SerializeField]
+    private GameObject sceneCamera;
+
     private void Awake()
     {
         if (singleton != null)
@@ -18,6 +21,14 @@ public class GameManager : MonoBehaviour
         {
             singleton = this;
         }
+    }
+
+    public void SetSceneCameraActice(bool isActive)
+    {
+        if (sceneCamera == null)
+            return;
+
+        sceneCamera.SetActive(isActive);
     }
 
     #region Player tracking

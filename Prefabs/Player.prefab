@@ -542,7 +542,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1847
+    m_Bits: 10039
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -666,6 +666,11 @@ MonoBehaviour:
   speed: 5
   mouseSensitivity: 3
   thrusterForce: 1300
+  thrusterFuelBurnSpeed: 1
+  thrusterFuelRegenSpeed: 0.3
+  environmentMask:
+    serializedVersion: 2
+    m_Bits: 8192
   jointSpring: 20
   jointMaxForce: 40
 --- !u!114 &1912040907970897304
@@ -741,6 +746,7 @@ MonoBehaviour:
   playerGraphics: {fileID: 6420052646658411390}
   playerUIPrefab: {fileID: 4928083803313779563, guid: 0fd5590950998e84b85564d28ffe0fe6,
     type: 3}
+  playerUIInstance: {fileID: 0}
 --- !u!114 &413796842659271977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -757,6 +763,13 @@ MonoBehaviour:
   disableOnDeath:
   - {fileID: 6420052647685566907}
   - {fileID: 9117145420457483420}
+  disableGameObjectsOnDeaths:
+  - {fileID: 6420052646658411390}
+  - {fileID: 6420052647147613151}
+  deathEffect: {fileID: 4531311563028478056, guid: 4385018b39c068943808737de3055616,
+    type: 3}
+  spawnEffect: {fileID: 7412606653111627031, guid: 152ac232e8339cc4a86f4ff84d67d9d7,
+    type: 3}
 --- !u!114 &5313834459302216385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -848,7 +861,7 @@ ConfigurableJoint:
     limit: 0
     bounciness: 0
     contactDistance: 0
-  m_TargetPosition: {x: 0, y: 0, z: 0}
+  m_TargetPosition: {x: 0, y: -1, z: 0}
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3

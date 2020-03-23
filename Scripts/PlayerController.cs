@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
+[RequireComponent (typeof(Animator))]
 [RequireComponent (typeof(ConfigurableJoint))]
 [RequireComponent (typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour
@@ -13,6 +13,20 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private float thrusterForce = 1000f;
+
+    [SerializeField]
+    private float thrusterFuelBurnSpeed = 1.0f;
+    [SerializeField]
+    private float thrusterFuelRegenSpeed = 0.3f;
+    private float thrusterFuelAmount = 1.0f;
+
+    public float GetThrusterFuelAmount()
+    {
+        return thrusterFuelAmount;
+    }
+
+    [SerializeField]
+    private LayerMask environmentMask;
 
     [Header("Spring settings")]
     [SerializeField]
@@ -35,6 +49,16 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 100.0f, environmentMask))
+        {
+            joint.targetPosition = new Vector3(0.0f, -hit.point.y, 0.0f);
+        }
+        else
+        {
+            joint.targetPosition = new Vector3(0.0f, 0, 0.0f);
+        }
+
         float xMove = Input.GetAxis("Horizontal");
         float zMove = Input.GetAxis("Vertical");
 
@@ -53,15 +77,25 @@ public class PlayerController : MonoBehaviour
         motor.RotateCamera(cameraRotation);
 
         Vector3 thrusterForce = Vector3.zero;
-        if (Input.GetButton("Jump"))
+        if (Input.GetButton("Jump") && thrusterFuelAmount > 0.0f)
         {
-            thrusterForce = Vector3.up * this.thrusterForce;
-            SetJointSettings(0.0f);
+            thrusterFuelAmount -= thrusterFuelBurnSpeed * Time.deltaTime;
+
+            if (thrusterFuelAmount >= 0.01f)
+            {
+                thrusterForce = Vector3.up * this.thrusterForce;
+                SetJointSettings(0.0f);
+            }
+            
         }
         else
         {
+            thrusterFuelAmount += thrusterFuelRegenSpeed * Time.deltaTime;
             SetJointSettings(jointSpring);
         }
+
+        thrusterFuelAmount = Mathf.Clamp(thrusterFuelAmount, 0.0f, 1.0f);
+
         motor.ApplyThruster(thrusterForce);
     }
     private void SetJointSettings(float jointSpring)
