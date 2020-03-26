@@ -45,12 +45,12 @@ public class Player : NetworkBehaviour
         //    RpcTakeDamage(9999);
         //}
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Cursor.visible = !Cursor.visible;
+        //if (Input.GetKeyDown(KeyCode.C))
+        //{
+        //    Cursor.visible = !Cursor.visible;
 
-            Cursor.lockState = (Cursor.visible) ? CursorLockMode.None : CursorLockMode.Locked;
-        }
+        //    Cursor.lockState = (Cursor.visible) ? CursorLockMode.None : CursorLockMode.Locked;
+        //}
 
     }
 

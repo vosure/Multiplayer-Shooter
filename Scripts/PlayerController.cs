@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-[RequireComponent (typeof(Animator))]
-[RequireComponent (typeof(ConfigurableJoint))]
-[RequireComponent (typeof(PlayerMotor))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(ConfigurableJoint))]
+[RequireComponent(typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
@@ -49,6 +49,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (PauseMenu.isOn)
+            return;
+
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 100.0f, environmentMask))
         {
@@ -86,7 +89,7 @@ public class PlayerController : MonoBehaviour
                 thrusterForce = Vector3.up * this.thrusterForce;
                 SetJointSettings(0.0f);
             }
-            
+
         }
         else
         {
